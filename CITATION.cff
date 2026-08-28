@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+title: "Modality Maturity Index (MMI)"
+message: "If you use this benchmark or harness, please cite the paper."
+type: software
+authors:
+  - family-names: "Patel"
+    given-names: "Rohit"
+  - family-names: "Hupkes"
+    given-names: "Dieuwke"
+  - family-names: "Strader"
+    given-names: "Sloan"
+license: "CC-BY-4.0"
+license-url: "https://creativecommons.org/licenses/by/4.0/"
+repository-code: "https://github.com/facebookresearch/modality-maturity-index"
+url: "https://huggingface.co/datasets/facebook/mmi"
+abstract: >-
+  MMI measures whether a multimodal system returns the output modalities a
+  prompt asks for. The headline Modality Presence Score is the mean per-prompt
+  F1 between the set of modalities returned and the set the prompt requires.
+  The harness and the accompanying dataset are released under CC BY 4.0.
+keywords:
+  - benchmark
+  - multimodal
+  - evaluation
+  - modality
+# What GitHub's "Cite this repository" button offers, and what `cffconvert`
+# emits: the paper, not the software entry above.
+preferred-citation:
+  type: article
+  title: >-
+    Modality Maturity Index: A benchmark for assessing multimodal
+    capabilities of omni models
+  authors:
+    - family-names: "Patel"
+      given-names: "Rohit"
+    - family-names: "Hupkes"
+      given-names: "Dieuwke"
+    - family-names: "Strader"
+      given-names: "Sloan"
+  year: 2026
+  journal: "arXiv preprint arXiv:2608.26317"
+  identifiers:
+    - type: other
+      value: "arXiv:2608.26317"
+  url: "https://arxiv.org/abs/2608.26317"

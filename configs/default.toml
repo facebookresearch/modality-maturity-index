@@ -1,0 +1,59 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree
+
+# Minimal public sample configuration.
+#
+# COST WARNING. This file deliberately runs a 25-prompt sample, not the full
+# benchmark. Set `sample = false` to run all 893 prompts against a paid API.
+# The rubric/tool experiment is far more expensive again — see
+# configs/paper_rubric_eval.toml and the cost section of README.md.
+#
+# No media tools are configured here, and no output-modality steering is sent:
+# the point of the benchmark is to observe what a system does by default.
+
+[settings]
+# Cost guardrail. Restricts the run to a curated 25-prompt set chosen to cover
+# a representative mix of input/output modality combinations. Set to false for
+# the full 893-prompt benchmark.
+sample = true
+
+concurrency = 3
+max_retries = 5
+retry_backoff = 4
+request_timeout = 300
+
+# Effective runner deadline is request_timeout + runner_timeout_padding.
+runner_timeout_padding = 60
+
+verbose = false
+
+# The structural judge is a fallback for parser false negatives. Off by
+# default because it costs money and contributes to lenient scoring only.
+judge_enabled = false
+judge_provider = "google"
+
+# Rubric scoring produces the MMI Value, reported separately from the
+# Modality Presence Score and never combined with it.
+rubric_enabled = false
+
+# [media_tools] is intentionally absent. With no backends configured, no
+# media-generation tools are offered to the model.
+
+[[models]]
+name = "gpt-5-example"
+provider = "openai"
+model_id = "gpt-5.4"
+api = "responses"
+
+[[models]]
+name = "claude-example"
+provider = "anthropic"
+model_id = "claude-opus-4-6"
+
+[[models]]
+name = "gemini-example"
+provider = "gemini"
+model_id = "gemini-3-flash"

@@ -1,0 +1,61 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree
+[project]
+name = "mmi"
+version = "0.1.0"
+description = "Modality Maturity Index — a benchmark harness for measuring whether a system under test returns the output modalities a prompt asks for"
+requires-python = ">=3.12"
+license = { text = "CC-BY-4.0" }
+readme = "README.md"
+
+# Core dependencies cover the default harness only: load the pinned dataset,
+# call the three shipped public providers, score, and judge.
+dependencies = [
+    "anthropic>=0.86.0",
+    "datasets>=4.0",
+    "google-genai>=1.62",
+    "httpx>=0.27",
+    "openai>=2.29.0",
+]
+
+[tool.uv]
+# The harness runs from a git checkout and is never installed. There is no
+# wheel, no sdist, and no build backend — `[project]` exists only so that
+# `uv sync` and uv.lock have dependencies to resolve against.
+package = false
+
+[tool.ruff]
+# Pinned explicitly so `ruff check .` gives the same answer for everyone.
+# Without this, results depend on whatever config happens to sit above the
+# checkout, and the command in README.md is not reproducible.
+target-version = "py312"
+
+[tool.ruff.lint]
+# Ruff defaults (pycodestyle errors + pyflakes) plus import sorting.
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+# The project is not installed, so nothing else would put the checkout root on
+# sys.path for `import mmi`.
+pythonpath = ["."]
+
+[dependency-groups]
+# Reading/writing the dataset in Parquet form and authoring a new revision.
+dataset = [
+    "pandas>=2.0",
+    "pyarrow>=23.0.1",
+]
+viewer = [
+    "pandas>=2.0",
+    "streamlit>=1.45",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.9",
+]

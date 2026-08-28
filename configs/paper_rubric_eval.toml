@@ -1,0 +1,87 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree
+
+# The three-driver neutral-tool experiment used to evaluate the rubrics.
+#
+# COST WARNING. This is the expensive one. Three driver models run all 893
+# prompts, and each may call image, audio and video generation backends up to
+# `tool_loop_limit` times per prompt. Video generation in particular is slow
+# and costly. Start with `sample = true`.
+#
+# The purpose of this experiment is to increase coverage across output
+# modalities so the rubrics can be tested — not to measure model ability. Do
+# not compare these numbers with configs/paper_main_eval.toml: results are
+# comparable only within an identical capability configuration.
+
+[settings]
+sample = false
+
+concurrency = 3
+max_retries = 5
+retry_backoff = 4
+
+# Extended for slow video and audio generation (experiments.tex).
+request_timeout = 900
+runner_timeout_padding = 60
+
+judge_enabled = true
+judge_provider = "google"
+# "Gemini 3 Flash" in the paper.
+judge_model = "gemini-3-flash-preview"
+
+# Rubric scoring implies retrieving URL-delivered artifacts: a rubric grades an
+# artifact's content, and there is nothing to grade without the bytes. Recorded
+# in run_manifest.json as rubric_profile.fetch_remote_assets. Retrieval never
+# changes provenance — a fetched URL stays external_url.
+rubric_enabled = true
+rubric_judge_provider = "google"
+rubric_judge_model = "gemini-3-flash-preview"
+
+# The paper says models may call the tools any number of times; the code that
+# produced the graded assets capped it at three rounds. Three is the recorded
+# behaviour and therefore the default; see CHANGELOG.md.
+tool_loop_limit = 3
+
+# Neutral media-tool backends.
+#
+# The model-facing tool schemas are frozen in mmi/media_tools.py: three tools
+# named image_gen / audio_gen / video_gen, one free-text `prompt` argument, and
+# byte-identical, deliberately uninformative descriptions, so the only signal
+# about a tool's modality is its name. Which backend fulfils each tool is
+# configuration; neutrality means it is held constant across drivers within an
+# experiment and recorded in the run manifest.
+#
+# There is deliberately no document tool.
+[media_tools.image_gen]
+provider = "google"
+model = "gemini-3.1-flash-image"
+
+[media_tools.audio_gen]
+provider = "google"
+model = "gemini-2.5-flash-tts"
+
+[media_tools.video_gen]
+provider = "google"
+model = "veo-3.1-fast"
+
+[[models]]
+name = "gpt-5.4"
+provider = "openai"
+model_id = "gpt-5.4"
+api = "responses"
+tools = ["image_gen", "audio_gen", "video_gen"]
+
+[[models]]
+name = "claude-opus-4-8"
+provider = "anthropic"
+model_id = "claude-opus-4-8"
+tools = ["image_gen", "audio_gen", "video_gen"]
+
+[[models]]
+name = "gemini-3.5-flash"
+provider = "gemini"
+model_id = "gemini-3.5-flash"
+tools = ["image_gen", "audio_gen", "video_gen"]

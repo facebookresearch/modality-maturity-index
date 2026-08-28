@@ -1,0 +1,85 @@
+# ---------------------------------------------------------------------------
+# Local datasets and media
+#
+# The dataset lives on Hugging Face and is loaded into the standard cache at
+# runtime. Nothing under data/ is published.
+# ---------------------------------------------------------------------------
+data/
+
+# ---------------------------------------------------------------------------
+# Run outputs
+# ---------------------------------------------------------------------------
+results/
+logs/
+*.log
+outputs/
+runs/
+
+# ---------------------------------------------------------------------------
+# Credentials — never commit any of these
+# ---------------------------------------------------------------------------
+.env
+.env.*
+credentials.json
+token.json
+client_secret*.json
+service_account*.json
+*.pem
+*.key
+*.p12
+.netrc
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+.python-version
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.dmypy.json
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+coverage.xml
+*.cover
+
+# ---------------------------------------------------------------------------
+# Editors and OS
+# ---------------------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db

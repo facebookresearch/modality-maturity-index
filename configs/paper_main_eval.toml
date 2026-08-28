@@ -1,0 +1,54 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the license found in the
+# LICENSE file in the root directory of this source tree
+
+# The five-model structural experiment reported in the paper.
+#
+# COST WARNING. This runs all 893 prompts against five paid APIs.
+#
+# The model IDs below are the ones the paper used. They will stop resolving as
+# vendors retire versions; this file records what was run, and is not a promise
+# that it stays runnable. Resolved model versions are recorded in the run
+# manifest so a future reader can tell what actually answered.
+#
+# Llama 4 Maverick was the fifth model in the paper. It is absent here because
+# a direct public route for it is not shipped in this release.
+
+[settings]
+sample = false
+
+concurrency = 3
+max_retries = 5
+retry_backoff = 4
+request_timeout = 300
+runner_timeout_padding = 60
+
+judge_enabled = true
+judge_provider = "google"
+# "Gemini 3 Flash" in the paper.
+judge_model = "gemini-3-flash-preview"
+
+rubric_enabled = false
+
+[[models]]
+name = "gpt-5.4"
+provider = "openai"
+model_id = "gpt-5.4"
+api = "responses"
+
+[[models]]
+name = "claude-opus-4-6"
+provider = "anthropic"
+model_id = "claude-opus-4-6"
+
+[[models]]
+name = "gemini-3.1-pro"
+provider = "gemini"
+model_id = "gemini-3.1-pro"
+
+[[models]]
+name = "gemini-3-flash"
+provider = "gemini"
+model_id = "gemini-3-flash"
